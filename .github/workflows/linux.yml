@@ -25,12 +25,8 @@ jobs:
 
       - name: Fix Linux Compilation
         run: |
-          sed -i 's/struct AutoOut {/class AutoOut {\n    public:/g' torzu/src/core/hle/service/cmif_types.h
-          sed -i '/class AutoOut {/a \        AutoOut() : raw() {}\n' torzu/src/core/hle/service/cmif_types.h
-          sed -i '/std::array<char, 0x18> lot_number;/a \    BatteryLot() = default;\n    BatteryLot(const char* str) {\n        std::copy(str, str + std::min(sizeof(lot_number), strlen(str)), lot_number.begin());\n    }' torzu/src/core/hle/service/set/settings_types.h
-          sed -i '/std::array<char, 0x18> serial_number;/a \    SerialNumber() = default;\n    SerialNumber(const char* str) {\n        std::copy(str, str + std::min(sizeof(serial_number), strlen(str)), serial_number.begin());\n    }' torzu/src/core/hle/service/set/settings_types.h
-          sed -i 's/*out_battery_lot = {"YUZU0EMULATOR14022024"};/*out_battery_lot = BatteryLot("YUZU0EMULATOR14022024");/g' torzu/src/core/hle/service/set/system_settings_server.cpp
-          sed -i 's/*out_console_serial = {"YUZ10000000001"};/*out_console_serial = SerialNumber("YUZ10000000001");/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+          sed -i 's/*out_battery_lot = {"YUZU0EMULATOR14022024"};/out_battery_lot->lot_number = {'Y', 'U', 'Z', 'U', '0', 'E', 'M', 'U', 'L', 'A', 'T', 'O', 'R', '1', '4', '0', '2', '2', '0', '2', '4'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+          sed -i 's/*out_console_serial = {"YUZ10000000001"};/out_console_serial->serial_number = {'Y', 'U', 'Z', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
 
       - name: Linux Assemble
         env:

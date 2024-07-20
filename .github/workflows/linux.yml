@@ -25,8 +25,8 @@ jobs:
 
       - name: Fix Linux Compilation
         run: |
-          sed -i 's/*out_battery_lot = {"YUZU0EMULATOR14022024"};/out_battery_lot->lot_number = {'Y', 'U', 'Z', 'U', '0', 'E', 'M', 'U', 'L', 'A', 'T', 'O', 'R', '1', '4', '0', '2', '2', '0', '2', '4'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
-          sed -i 's/*out_console_serial = {"YUZ10000000001"};/out_console_serial->serial_number = {'Y', 'U', 'Z', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+          sed -i 's/*out_battery_lot = {"YUZU0EMULATOR14022024"};/out_battery_lot->lot_number = {  'Y', 'U', 'Z', 'U', '0',  'E', 'M', 'U', 'L', 'A',  'T', 'O', 'R', '1', '4',  '0', '2', '2', '0', '2',  '4'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+          sed -i 's/*out_console_serial = {"YUZ10000000001"};/out_console_serial->serial_number = {  'Y', 'U', 'Z', '1',  '0', '0', '0', '0',  '0', '0', '0', '0',  '0', '1'};/g' torzu/src/core/hle/service/set/system_settings_server.cpp
 
       - name: Linux Assemble
         env:

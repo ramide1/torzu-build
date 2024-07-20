@@ -23,6 +23,15 @@ jobs:
         run: |
           sudo apt-get install -y cmake glslang-tools libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev qttools5-dev libmbedtls-dev catch2 libfmt-dev nlohmann-json3-dev libavfilter-dev libavcodec-dev libswscale-dev
 
+      - name: Fix Linux Compilation
+        run: |
+          sed -i 's/struct AutoOut {/class AutoOut {\n    public:/g' torzu/src/core/hle/service/cmif_types.h
+          sed -i '/class AutoOut {/a \        AutoOut() : raw() {}\n' torzu/src/core/hle/service/cmif_types.h
+          sed -i '/std::array<char, 0x18> lot_number;/a \    BatteryLot() = default;\n    BatteryLot(const char* str) {\n        std::copy(str, str + std::min(sizeof(lot_number), strlen(str)), lot_number.begin());\n    }' torzu/src/core/hle/service/set/settings_types.h
+          sed -i '/std::array<char, 0x18> serial_number;/a \    SerialNumber() = default;\n    SerialNumber(const char* str) {\n        std::copy(str, str + std::min(sizeof(serial_number), strlen(str)), serial_number.begin());\n    }' torzu/src/core/hle/service/set/settings_types.h
+          sed -i 's/*out_battery_lot = {"YUZU0EMULATOR14022024"};/*out_battery_lot = BatteryLot("YUZU0EMULATOR14022024");/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+          sed -i 's/*out_console_serial = {"YUZ10000000001"};/*out_console_serial = SerialNumber("YUZ10000000001");/g' torzu/src/core/hle/service/set/system_settings_server.cpp
+
       - name: Linux Assemble
         env:
           CMAKE_C_COMPILER_LAUNCHER: "ccache"

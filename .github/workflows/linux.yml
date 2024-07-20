@@ -1,5 +1,5 @@
 # A workflow to build and upload every 2 weeks
-name: Build
+name: Linux
 
 on:
   schedule:

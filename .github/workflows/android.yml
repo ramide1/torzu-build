@@ -38,7 +38,6 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get install -y cmake glslang-tools libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev qttools5-dev libmbedtls-dev catch2 libfmt-dev nlohmann-json3-dev libavfilter-dev libavcodec-dev libswscale-dev
-          ln -s /usr/bin/ninja .
 
       - name: Android Assemble
         env:
@@ -57,23 +56,3 @@ jobs:
         with:
           name: torzu-release.apk
           path: torzu-release.apk
-
-      - name: Linux Assemble
-        env:
-          CMAKE_C_COMPILER_LAUNCHER: "ccache"
-          CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
-        run: |
-          cd torzu
-          mkdir build && cd build
-          cmake .. -GNinja -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF
-          ninja
-      
-      - name: Rename Binaries
-        run: |
-          mv torzu/build/bin/yuzu torzu-release-linux
-      
-      - name: Upload Release Binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: torzu-release-linux
-          path: torzu-release-linux

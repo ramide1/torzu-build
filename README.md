@@ -6,6 +6,8 @@
   <br>
   <a href="https://github.com/ramide1/torzu-build/actions/workflows/android.yml" target="_blank"><img src="https://github.com/ramide1/torzu-build/actions/workflows/android.yml/badge.svg">
   </a>
+  <a href="https://github.com/ramide1/torzu-build/actions/workflows/linux.yml" target="_blank"><img src="https://github.com/ramide1/torzu-build/actions/workflows/linux.yml/badge.svg">
+  </a>
 </h1>
 
 <h4 align="center"><b>Torzu</b> is a fork of yuzu, an open-source Nintendo Switch emulator.

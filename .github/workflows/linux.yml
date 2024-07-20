@@ -30,7 +30,7 @@ jobs:
         run: |
           cd torzu
           mkdir build && cd build
-          cmake .. -GNinja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF -DYUZU_USE_QT_WEB_ENGINE=ON -DYUZU_USE_EXTERNAL_SDL2=OFF
+          cmake .. -GNinja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF -DYUZU_USE_QT_WEB_ENGINE=ON
           ninja
       
       - name: Rename Binaries

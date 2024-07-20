@@ -37,7 +37,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          sudo apt-get install autoconf cmake g++-11 gcc-11 git glslang-tools libasound2 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libzstd-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev
+          sudo apt-get install -y cmake glslang-tools libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev libmbedtls-dev catch2 libfmt-dev nlohmann-json3-dev libavfilter-dev libavcodec-dev libswscale-dev
 
       - name: Android Assemble
         env:
@@ -49,10 +49,30 @@ jobs:
 
       - name: Rename APKs
         run: |
-          mv torzu/src/android/app/build/outputs/apk/mainline/release/app-mainline-release.apk torzu-${{ github.event.number }}-release.apk
+          mv torzu/src/android/app/build/outputs/apk/mainline/release/app-mainline-release.apk torzu-release.apk
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: torzu-${{ github.event.number }}-release.apk
-          path: torzu-${{ github.event.number }}-release.apk
+          name: torzu-release.apk
+          path: torzu-release.apk
+
+      - name: Linux Assemble
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: "ccache"
+          CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
+        run: |
+          cd torzu
+          mkdir build && cd build
+          cmake .. -GNinja -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF
+          ninja
+      
+      - name: Rename Binaries
+        run: |
+          mv torzu/build/bin/yuzu torzu-release-linux
+      
+      - name: Upload Release Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: torzu-release-linux
+          path: torzu-release-linux

@@ -16,6 +16,12 @@ jobs:
         run: |
           pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zip unzip ccache wget
       
+      - name: Install Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
       - name: Install Android SDK
         run: |
           export ANDROID_HOME=$GITHUB_WORKSPACE/Android
@@ -47,12 +53,6 @@ jobs:
             ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle') }}-${{ hashFiles('app/**/*.xml') }}-
             ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle') }}-
             ${{ runner.os }}-gradle-
-
-      - name: Install Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin' # Temurin should come pre-installed on GitHub-hosted runners
-          java-version: '17'
 
       - name: Android Assemble
         env:

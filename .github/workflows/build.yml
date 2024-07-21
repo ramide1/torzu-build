@@ -24,7 +24,6 @@ jobs:
       
       - name: Install Android SDK
         run: |
-          export ANDROID_HOME=$GITHUB_WORKSPACE/Android
           export ANDROID_SDK_ROOT=$GITHUB_WORKSPACE/Android/Sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
@@ -59,7 +58,6 @@ jobs:
           CMAKE_C_COMPILER_LAUNCHER: "ccache"
           CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
         run: |
-          export ANDROID_HOME=$GITHUB_WORKSPACE/Android
           export ANDROID_SDK_ROOT=$GITHUB_WORKSPACE/Android/Sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
           export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools

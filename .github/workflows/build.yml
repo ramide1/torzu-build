@@ -1,5 +1,5 @@
 # A workflow to build and upload every 2 weeks
-name: Android
+name: Build
 
 on:
   schedule:
@@ -9,7 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: archlinux
     steps:
+      - name: Install Dependencies
+        run: |
+          pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zstd zip unzip ccache
+
       - name: Git Checkout
         run: |
           git clone --depth 1 --recursive https://codeberg.org/litucks/torzu.git
@@ -18,7 +24,7 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           max-size: 3Gi
-
+      
       - name: Restore Gradle Cache
         uses: actions/cache@v4
         with:
@@ -34,10 +40,6 @@ jobs:
         with:
           distribution: 'temurin' # Temurin should come pre-installed on GitHub-hosted runners
           java-version: '17'
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get install -y cmake glslang-tools libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 mesa-common-dev nasm ninja-build qtbase5-dev qtbase5-private-dev qtwebengine5-dev qtmultimedia5-dev qttools5-dev libmbedtls-dev catch2 libfmt-dev nlohmann-json3-dev libavfilter-dev libavcodec-dev libswscale-dev
 
       - name: Android Assemble
         env:
@@ -56,3 +58,23 @@ jobs:
         with:
           name: torzu-release.apk
           path: torzu-release.apk
+
+      - name: Linux Assemble
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: "ccache"
+          CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
+        run: |
+          cd torzu
+          mkdir build && cd build
+          cmake .. -GNinja -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF
+          ninja
+      
+      - name: Rename Binaries
+        run: |
+          mv torzu/build/bin/yuzu torzu-release-linux
+      
+      - name: Upload Release Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: torzu-release-linux
+          path: torzu-release-linux

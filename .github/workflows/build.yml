@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zip unzip ccache
+          pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zip unzip ccache wget
       
       - name: Install Android SDK
         run: |
@@ -22,7 +22,7 @@ jobs:
           unzip commandlinetools.zip -d android_sdk
           mkdir -p android_sdk/cmdline-tools/latest
           mv android_sdk/cmdline-tools/* android_sdk/cmdline-tools/latest/
-          yes | android_sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          echo 'ANDROID_HOME=android_sdk' >> $GITHUB_ENV
 
       - name: Git Checkout
         run: |

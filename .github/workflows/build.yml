@@ -15,9 +15,14 @@ jobs:
       - name: Install Dependencies
         run: |
           pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zip unzip ccache
-          git clone https://aur.archlinux.org/android-sdk-cmdline-tools-latest.git
-          cd android-sdk-cmdline-tools-latest
-          makepkg -si --noconfirm
+      
+      - name: Install Android SDK
+        run: |
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O commandlinetools.zip
+          unzip commandlinetools.zip -d android_sdk
+          mkdir -p android_sdk/cmdline-tools/latest
+          mv android_sdk/cmdline-tools/* android_sdk/cmdline-tools/latest/
+          yes | android_sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Git Checkout
         run: |

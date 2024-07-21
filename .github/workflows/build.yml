@@ -19,9 +19,9 @@ jobs:
       - name: Install Android SDK
         run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O commandlinetools.zip
-          unzip commandlinetools.zip -d android_sdk
-          mkdir -p android_sdk/cmdline-tools
-          mv android_sdk/cmdline-tools/* android_sdk/cmdline-tools/latest/
+          unzip commandlinetools.zip -d commandlinetools
+          mkdir -p android_sdk/cmdline-tools/latest
+          mv commandlinetools/cmdline-tools/* android_sdk/cmdline-tools/latest/
           echo 'ANDROID_HOME=android_sdk' >> $GITHUB_ENV
 
       - name: Git Checkout

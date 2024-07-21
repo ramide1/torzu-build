@@ -22,7 +22,6 @@ jobs:
           unzip commandlinetools.zip -d commandlinetools
           mkdir -p android_sdk/cmdline-tools/latest
           mv commandlinetools/cmdline-tools/* android_sdk/cmdline-tools/latest/
-          echo 'ANDROID_HOME=android_sdk' >> $GITHUB_ENV
 
       - name: Git Checkout
         run: |
@@ -53,6 +52,7 @@ jobs:
         env:
           CMAKE_C_COMPILER_LAUNCHER: "ccache"
           CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
+          ANDROID_HOME: "$GITHUB_WORKSPACE/android_sdk"
         run: |
           cd torzu/src/android
           ./gradlew --no-daemon --stacktrace --build-cache --parallel --configure-on-demand assembleMainlineRelease

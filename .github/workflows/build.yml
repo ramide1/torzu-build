@@ -18,10 +18,16 @@ jobs:
       
       - name: Install Android SDK
         run: |
+          export ANDROID_HOME=$GITHUB_WORKSPACE/Android
+          export ANDROID_SDK_ROOT=$GITHUB_WORKSPACE/Android/Sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O commandlinetools.zip
           mkdir -p $GITHUB_WORKSPACE/Android/Sdk/cmdline-tools
           unzip commandlinetools.zip -d $GITHUB_WORKSPACE/Android/Sdk/cmdline-tools
           mv $GITHUB_WORKSPACE/Android/Sdk/cmdline-tools/cmdline-tools $GITHUB_WORKSPACE/Android/Sdk/cmdline-tools/latest
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33"
 
       - name: Git Checkout
         run: |
@@ -52,10 +58,11 @@ jobs:
         env:
           CMAKE_C_COMPILER_LAUNCHER: "ccache"
           CMAKE_CXX_COMPILER_LAUNCHER: "ccache"
-          ANDROID_HOME: "$GITHUB_WORKSPACE/Android"
-          ANDROID_SDK_ROOT: "$GITHUB_WORKSPACE/Android/Sdk"
-          PATH: "${{ github.env.PATH }}:$GITHUB_WORKSPACE/Android/Sdk/cmdline-tools/latest/bin:$GITHUB_WORKSPACE/Android/Sdk/platform-tools"
         run: |
+          export ANDROID_HOME=$GITHUB_WORKSPACE/Android
+          export ANDROID_SDK_ROOT=$GITHUB_WORKSPACE/Android/Sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
           cd torzu/src/android
           ./gradlew --no-daemon --stacktrace --build-cache --parallel --configure-on-demand assembleMainlineRelease
 

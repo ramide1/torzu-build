@@ -14,7 +14,10 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zstd zip unzip ccache
+          pacman -Syu --noconfirm --needed base-devel boost catch2 cmake ffmpeg fmt git glslang libzip mbedtls ninja nlohmann-json opus qt5 sdl2 zip unzip ccache
+          git clone https://aur.archlinux.org/android-sdk-cmdline-tools-latest.git
+          cd android-sdk-cmdline-tools-latest
+          makepkg -si --noconfirm
 
       - name: Git Checkout
         run: |

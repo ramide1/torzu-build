@@ -1,9 +1,9 @@
-# A workflow to build and upload every 2 weeks
+# A workflow to build and upload every week
 name: Build
 
 on:
   schedule:
-    - cron: '0 0 * * 0/14'
+    - cron: '0 0 * * 0'
   workflow_dispatch:
 
 jobs:

@@ -21,4 +21,4 @@ It runs most Nintendo Switch games released until the date of the Yuzu takedown.
 
 ## About this repository
 
-This is a CI for build Torzu every 2 weeks, you can download the latest build on Github actions workflows and you need a Github account.
+This is a CI for build Torzu every week, you can download the latest build on Github actions workflows and you need a Github account.
